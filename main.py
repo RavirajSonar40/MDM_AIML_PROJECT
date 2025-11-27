@@ -12,7 +12,7 @@ import seaborn as sns
 from sklearn.pipeline import Pipeline
 from sklearn.model_selection import train_test_split, GridSearchCV, cross_val_score
 from sklearn.compose import ColumnTransformer
-from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import LinearRegression, Ridge
 from sklearn.ensemble import RandomForestRegressor, VotingRegressor
 from sklearn.preprocessing import StandardScaler, OrdinalEncoder, OneHotEncoder
 from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error

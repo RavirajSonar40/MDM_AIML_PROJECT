@@ -35,18 +35,20 @@ function ModelEvaluation({ apiUrl }) {
   };
 
   return (
-    <div className="card">
+    <div>
       <h2>Model Evaluation</h2>
-      
+
       <div className="select-group">
         <label>Select Model</label>
-        <select value={modelName} onChange={(e) => setModelName(e.target.value)}>
-          {models.map(model => (
-            <option key={model.value} value={model.value}>
-              {model.label}
-            </option>
-          ))}
-        </select>
+        <div className="select-wrapper">
+          <select value={modelName} onChange={(e) => setModelName(e.target.value)}>
+            {models.map(model => (
+              <option key={model.value} value={model.value}>
+                {model.label}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       <button className="btn" onClick={evaluateModel} disabled={loading}>
@@ -65,7 +67,7 @@ function ModelEvaluation({ apiUrl }) {
       {results && (
         <div>
           <h3 style={{ marginTop: '2rem' }}>Results for {results.model_name}</h3>
-          
+
           <div className="metrics-grid">
             <div className="metric-item">
               <h4>R² Score</h4>
@@ -86,8 +88,8 @@ function ModelEvaluation({ apiUrl }) {
           </div>
 
           {results.timing && (
-            <div style={{ background: '#f0f7ff', padding: '1rem', borderRadius: '8px', marginTop: '1rem' }}>
-              <h4 style={{ color: '#1e3c72', marginBottom: '0.5rem' }}>⏱️ Performance Timing</h4>
+            <div style={{ background: 'var(--nav-bg)', padding: '1rem', borderRadius: '8px', marginTop: '1rem', border: '1px solid var(--glass-border)' }}>
+              <h4 style={{ color: 'var(--accent-glow)', marginBottom: '0.5rem', fontFamily: 'Source Code Pro, monospace' }}>⏱️ Performance Timing</h4>
               <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
                 <div>
                   <strong>Training:</strong> {results.timing.train_time}s
@@ -103,9 +105,9 @@ function ModelEvaluation({ apiUrl }) {
           )}
 
           <div className="image-container">
-            <h4 style={{ color: '#1e3c72', marginBottom: '1rem' }}>Actual vs Predicted</h4>
-            <img 
-              src={`data:image/png;base64,${results.plot}`} 
+            <h4 style={{ marginBottom: '1rem' }}>Actual vs Predicted</h4>
+            <img
+              src={`data:image/png;base64,${results.plot}`}
               alt="Model evaluation plot"
             />
           </div>

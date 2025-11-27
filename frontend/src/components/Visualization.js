@@ -25,23 +25,27 @@ function Visualization({ apiUrl }) {
   };
 
   return (
-    <div className="card">
+    <div>
       <h2>Data Visualization</h2>
-      
+
       <div className="select-group">
         <label>Analysis Type</label>
-        <select value={analysisType} onChange={(e) => setAnalysisType(e.target.value)}>
-          <option value="Univariate">Univariate Analysis</option>
-          <option value="Bivariate">Bivariate Analysis</option>
-        </select>
+        <div className="select-wrapper">
+          <select value={analysisType} onChange={(e) => setAnalysisType(e.target.value)}>
+            <option value="Univariate">Univariate Analysis</option>
+            <option value="Bivariate">Bivariate Analysis</option>
+          </select>
+        </div>
       </div>
 
       <div className="select-group">
         <label>Variable Type</label>
-        <select value={variableType} onChange={(e) => setVariableType(e.target.value)}>
-          <option value="Continuous">Continuous</option>
-          <option value="Categorical">Categorical</option>
-        </select>
+        <div className="select-wrapper">
+          <select value={variableType} onChange={(e) => setVariableType(e.target.value)}>
+            <option value="Continuous">Continuous</option>
+            <option value="Categorical">Categorical</option>
+          </select>
+        </div>
       </div>
 
       <button className="btn" onClick={generateVisualization} disabled={loading}>
@@ -62,9 +66,9 @@ function Visualization({ apiUrl }) {
           <h3 style={{ marginTop: '2rem' }}>Results ({plots.length} plots)</h3>
           {plots.map((plot, index) => (
             <div key={index} className="image-container">
-              <h4 style={{ color: '#1e3c72', marginBottom: '1rem' }}>{plot.variable}</h4>
-              <img 
-                src={`data:image/png;base64,${plot.plot}`} 
+              <h4 style={{ marginBottom: '1rem' }}>{plot.variable}</h4>
+              <img
+                src={`data:image/png;base64,${plot.plot}`}
                 alt={`${plot.variable} visualization`}
               />
             </div>

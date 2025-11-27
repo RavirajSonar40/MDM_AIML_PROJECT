@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { motion, AnimatePresence } from 'framer-motion';
 import './App.css';
+import TiltCard from './components/TiltCard';
 import DataInfo from './components/DataInfo';
 import Visualization from './components/Visualization';
 import ModelEvaluation from './components/ModelEvaluation';
 import ModelComparison from './components/ModelComparison';
 import CrossValidation from './components/CrossValidation';
 import DetailedComparison from './components/DetailedComparison';
+import CustomCursor from './components/CustomCursor';
+import ParticleBackground from './components/ParticleBackground';
 
 const API_URL = 'http://localhost:8000';
 
@@ -14,10 +18,16 @@ function App() {
   const [activeTab, setActiveTab] = useState('data');
   const [dataInfo, setDataInfo] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [theme, setTheme] = useState('dark');
 
   useEffect(() => {
     fetchDataInfo();
-  }, []);
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+  };
 
   const fetchDataInfo = async () => {
     try {
@@ -33,64 +43,72 @@ function App() {
 
   return (
     <div className="App">
-      <header className="header">
-        <div className="header-content">
-          <h1>🌊 Marine Microplastics Analysis</h1>
-          <p>Advanced ML-powered analysis dashboard</p>
+      <CustomCursor />
+      <ParticleBackground />
+
+      <button className="theme-toggle" onClick={toggleTheme} title="Toggle Theme">
+        {theme === 'dark' ? '☀️' : '🌙'}
+      </button>
+
+      <div className="aurora-bg">
+        <div className="aurora-blob blob-1"></div>
+        <div className="aurora-blob blob-2"></div>
+        <div className="aurora-blob blob-3"></div>
+      </div>
+
+      <div className="content-wrapper">
+        <header className="hero-header">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: "easeOut" }}
+          >
+            <div className="hero-subtitle">Marine Microplastics Analysis</div>
+            <h1 className="hero-title">
+              OCEAN<br />ANALYTICS
+            </h1>
+          </motion.div>
+        </header>
+
+        <div className="nav-container">
+          <nav className="nav-tabs">
+            {['data', 'visualize', 'evaluate', 'compare', 'cv', 'detailed'].map((tab) => (
+              <button
+                key={tab}
+                className={activeTab === tab ? 'tab active' : 'tab'}
+                onClick={() => setActiveTab(tab)}
+              >
+                {tab.charAt(0).toUpperCase() + tab.slice(1)}
+              </button>
+            ))}
+          </nav>
         </div>
-      </header>
 
-      <nav className="nav-tabs">
-        <button 
-          className={activeTab === 'data' ? 'tab active' : 'tab'}
-          onClick={() => setActiveTab('data')}
-        >
-          📊 Data Overview
-        </button>
-        <button 
-          className={activeTab === 'visualize' ? 'tab active' : 'tab'}
-          onClick={() => setActiveTab('visualize')}
-        >
-          📈 Visualizations
-        </button>
-        <button 
-          className={activeTab === 'evaluate' ? 'tab active' : 'tab'}
-          onClick={() => setActiveTab('evaluate')}
-        >
-          🤖 Model Evaluation
-        </button>
-        <button 
-          className={activeTab === 'compare' ? 'tab active' : 'tab'}
-          onClick={() => setActiveTab('compare')}
-        >
-          ⚖️ Model Comparison
-        </button>
-        <button 
-          className={activeTab === 'cv' ? 'tab active' : 'tab'}
-          onClick={() => setActiveTab('cv')}
-        >
-          🔄 Cross-Validation
-        </button>
-        <button 
-          className={activeTab === 'detailed' ? 'tab active' : 'tab'}
-          onClick={() => setActiveTab('detailed')}
-        >
-          📊 Detailed Analysis
-        </button>
-      </nav>
+        <main className="main-content">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, y: 20, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -20, scale: 0.95 }}
+              transition={{ duration: 0.4 }}
+            >
+              <div className="card-3d">
+                {activeTab === 'data' && <DataInfo dataInfo={dataInfo} loading={loading} />}
+                {activeTab === 'visualize' && <Visualization apiUrl={API_URL} />}
+                {activeTab === 'evaluate' && <ModelEvaluation apiUrl={API_URL} />}
+                {activeTab === 'compare' && <ModelComparison apiUrl={API_URL} />}
+                {activeTab === 'cv' && <CrossValidation apiUrl={API_URL} />}
+                {activeTab === 'detailed' && <DetailedComparison apiUrl={API_URL} />}
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </main>
 
-      <main className="main-content">
-        {activeTab === 'data' && <DataInfo dataInfo={dataInfo} loading={loading} />}
-        {activeTab === 'visualize' && <Visualization apiUrl={API_URL} />}
-        {activeTab === 'evaluate' && <ModelEvaluation apiUrl={API_URL} />}
-        {activeTab === 'compare' && <ModelComparison apiUrl={API_URL} />}
-        {activeTab === 'cv' && <CrossValidation apiUrl={API_URL} />}
-        {activeTab === 'detailed' && <DetailedComparison apiUrl={API_URL} />}
-      </main>
-
-      <footer className="footer">
-        <p>Marine Microplastics Analysis System © 2024</p>
-      </footer>
+        <footer style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-secondary)' }}>
+          <p>Designed for Advanced Analytics</p>
+        </footer>
+      </div>
     </div>
   );
 }

@@ -22,9 +22,9 @@ function DetailedComparison({ apiUrl }) {
   };
 
   return (
-    <div className="card">
+    <div>
       <h2>Detailed Model Comparison</h2>
-      <p style={{ color: '#666', marginBottom: '1.5rem' }}>
+      <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>
         Comprehensive comparison with multiple metrics and visualizations
       </p>
 
@@ -44,17 +44,18 @@ function DetailedComparison({ apiUrl }) {
       {results && (
         <div>
           <h3 style={{ marginTop: '2rem' }}>Comparison Results</h3>
-          
+
           <div style={{ overflowX: 'auto', marginTop: '1.5rem' }}>
             <table style={{
               width: '100%',
               borderCollapse: 'collapse',
-              background: 'white',
-              boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-              borderRadius: '8px'
+              background: 'var(--card-bg)',
+              boxShadow: '0 10px 30px -10px rgba(0, 0, 0, 0.2)',
+              borderRadius: '8px',
+              border: '1px solid var(--glass-border)'
             }}>
               <thead>
-                <tr style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', color: 'white' }}>
+                <tr style={{ background: 'var(--nav-bg)', color: 'var(--accent-glow)' }}>
                   <th style={{ padding: '1rem', textAlign: 'left' }}>Model</th>
                   <th style={{ padding: '1rem', textAlign: 'right' }}>R² Score</th>
                   <th style={{ padding: '1rem', textAlign: 'right' }}>RMSE</th>
@@ -65,11 +66,12 @@ function DetailedComparison({ apiUrl }) {
               <tbody>
                 {results.results.map((result, index) => (
                   <tr key={index} style={{
-                    borderBottom: '1px solid #e0e0e0',
-                    background: index % 2 === 0 ? '#f8f9fa' : 'white'
+                    borderBottom: '1px solid var(--glass-border)',
+                    background: index % 2 === 0 ? 'var(--nav-bg)' : 'transparent',
+                    color: 'var(--text-primary)'
                   }}>
                     <td style={{ padding: '1rem', fontWeight: '500' }}>{result.model_name}</td>
-                    <td style={{ padding: '1rem', textAlign: 'right', color: '#667eea', fontWeight: '600' }}>
+                    <td style={{ padding: '1rem', textAlign: 'right', color: 'var(--accent-glow)', fontWeight: '600', fontFamily: 'Source Code Pro, monospace' }}>
                       {result.r2_score.toFixed(4)}
                     </td>
                     <td style={{ padding: '1rem', textAlign: 'right' }}>{result.rmse.toFixed(2)}</td>
@@ -84,15 +86,15 @@ function DetailedComparison({ apiUrl }) {
           </div>
 
           {results.total_time && (
-            <div style={{ background: '#f0f7ff', padding: '1rem', borderRadius: '8px', marginTop: '1rem', textAlign: 'center' }}>
+            <div style={{ background: 'var(--nav-bg)', padding: '1rem', borderRadius: '8px', marginTop: '1rem', textAlign: 'center', border: '1px solid var(--glass-border)', color: 'var(--accent-glow)' }}>
               <strong>⏱️ Total Time:</strong> {results.total_time}s
             </div>
           )}
 
           <div className="image-container">
-            <h4 style={{ color: '#1e3c72', marginBottom: '1rem' }}>Comprehensive Metrics Comparison</h4>
-            <img 
-              src={`data:image/png;base64,${results.comparison_plot}`} 
+            <h4 style={{ marginBottom: '1rem' }}>Comprehensive Metrics Comparison</h4>
+            <img
+              src={`data:image/png;base64,${results.comparison_plot}`}
               alt="Detailed comparison plot"
             />
           </div>
