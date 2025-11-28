@@ -32,7 +32,7 @@ app = FastAPI(title="Marine Microplastics Analysis API", version="1.0.0")
 # Add CORS middleware to allow cross-origin requests from the frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allow all origins (for development)
+    allow_origins=["*"],  # Allow all origins (for development and production)
     allow_credentials=True,  # Allow credentials
     allow_methods=["*"],  # Allow all HTTP methods
     allow_headers=["*"],  # Allow all headers

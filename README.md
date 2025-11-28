@@ -77,7 +77,7 @@ A comprehensive machine learning platform for analyzing marine microplastic poll
 - Node.js 16 or higher
 - Git
 
-### Backend Setup
+### Local Development Setup
 
 1. **Clone the repository**
 ```bash
@@ -85,40 +85,94 @@ git clone https://github.com/your-username/marine-microplastics-analysis.git
 cd marine-microplastics-analysis
 ```
 
-2. **Create virtual environment**
+2. **Backend Setup**
 ```bash
+# Create virtual environment
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
 
-3. **Install Python dependencies**
-```bash
+# Install Python dependencies
 pip install -r requirements.txt
-```
 
-4. **Run the backend server**
-```bash
+# Run the backend server
 python main.py
 ```
 The API will be available at `http://localhost:8000`
 
-### Frontend Setup
-
-1. **Navigate to frontend directory**
+3. **Frontend Setup**
 ```bash
+# Navigate to frontend directory
 cd frontend
-```
 
-2. **Install Node.js dependencies**
-```bash
+# Install Node.js dependencies
 npm install
-```
 
-3. **Start the development server**
-```bash
+# Start the development server
 npm start
 ```
 The web interface will be available at `http://localhost:3000`
+
+## 🚀 Deployment to Render
+
+### Option 1: Multi-Service Deployment (Recommended)
+
+1. **Connect Repository to Render**
+   - Create a Render account at [render.com](https://render.com)
+   - Connect your GitHub repository
+   - Render will automatically detect the `render.yaml` file
+
+2. **Deploy Services**
+   - Render will create two services:
+     - **Backend API**: `marine-microplastics-api` (Python/FastAPI)
+     - **Frontend**: `marine-microplastics-frontend` (Static Site)
+
+3. **Update API URL**
+   - After backend deployment, note the API URL (e.g., `https://marine-microplastics-api.onrender.com`)
+   - Update the `REACT_APP_API_URL` environment variable in the frontend service to point to your API
+
+### Option 2: Manual Service Creation
+
+1. **Deploy Backend API**
+   - Create a new **Web Service** in Render
+   - Select your repository
+   - Configure:
+     - **Runtime**: Python 3
+     - **Build Command**: `pip install -r requirements.txt`
+     - **Start Command**: `uvicorn main:app --host 0.0.0.0 --port $PORT`
+
+2. **Deploy Frontend**
+   - Create a new **Static Site** in Render
+   - Select your repository
+   - Configure:
+     - **Build Command**: `cd frontend && npm install && npm run build`
+     - **Publish Directory**: `frontend/build`
+     - **Environment Variables**:
+       - `REACT_APP_API_URL`: `https://your-api-service.onrender.com`
+
+### Environment Variables
+
+For production deployment, ensure these environment variables are set:
+
+**Backend Service:**
+- `PYTHON_VERSION`: `3.11.0` (or your preferred Python version)
+
+**Frontend Service:**
+- `REACT_APP_API_URL`: `https://your-backend-service.onrender.com`
+
+### Deployment Notes
+
+- **CORS**: The backend is configured to allow all origins (`*`) for development and production
+- **Dataset**: The CSV file is included in the repository and will be deployed with the backend
+- **Memory**: The free tier may have memory limitations for large datasets or complex models
+- **Scaling**: Consider upgrading to paid plans for production workloads
+
+### Post-Deployment Checklist
+
+- [ ] Backend API responds at `/health` endpoint
+- [ ] Frontend loads and displays correctly
+- [ ] API calls work from frontend to backend
+- [ ] All tabs (Data, Visualize, Evaluate, Compare, CV) function properly
+- [ ] Model training completes without timeouts
 
 ## 📖 Usage
 
