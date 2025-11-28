@@ -1,28 +1,21 @@
 services:
-  # Backend API service
+  # Single service for both backend API and frontend
   - type: web
-    name: marine-microplastics-api
+    name: marine-microplastics-app
     env: python3
     plan: starter
-    buildCommand: pip install -r requirements.txt
+    buildCommand: |
+      # Build the frontend first
+      cd frontend
+      npm install
+      npm run build
+      cd ..
+      # Install Python dependencies
+      pip install -r requirements.txt
     startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0
-
-  # Frontend service
-  - type: web
-    name: marine-microplastics-frontend
-    env: static
-    plan: starter
-    buildCommand: |
-      cd frontend
-      npm install
-      npm run build
-    staticPublishPath: frontend/build
-    envVars:
-      - key: REACT_APP_API_URL
-        value: https://marine-microplastics-api.onrender.com
 
 databases:
   # Optional: Add a database if needed for persistent data

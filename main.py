@@ -1,33 +1,40 @@
 
-from fastapi import FastAPI, HTTPException 
-from fastapi.middleware.cors import CORSMiddleware  
-from pydantic import BaseModel 
-from typing import List, Optional, Dict, Any  
-import pandas as pd  
-import numpy as np  
-import pickle  
-import io  
-import base64  
-from matplotlib import pyplot as plt  
-import seaborn as sns  
-from sklearn.pipeline import Pipeline  
-from sklearn.model_selection import train_test_split, GridSearchCV, cross_val_score, cross_validate 
-from sklearn.compose import ColumnTransformer  
-from sklearn.linear_model import LinearRegression, Ridge  
-from sklearn.ensemble import RandomForestRegressor, VotingRegressor  
-from sklearn.preprocessing import StandardScaler, OrdinalEncoder, OneHotEncoder  
-from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error  
-from sklearn.svm import SVR  
-from sklearn.tree import DecisionTreeRegressor  
-from xgboost import XGBRegressor  
-from lightgbm import LGBMRegressor  
-from models_scratch import LinearRegressionScratch, SVMScratch, DecisionTreeScratch  
+from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+from pydantic import BaseModel
+from typing import List, Optional, Dict, Any
+import pandas as pd
+import numpy as np
+import pickle
+import io
+import base64
+from matplotlib import pyplot as plt
+import seaborn as sns
+from sklearn.pipeline import Pipeline
+from sklearn.model_selection import train_test_split, GridSearchCV, cross_val_score, cross_validate
+from sklearn.compose import ColumnTransformer
+from sklearn.linear_model import LinearRegression, Ridge
+from sklearn.ensemble import RandomForestRegressor, VotingRegressor
+from sklearn.preprocessing import StandardScaler, OrdinalEncoder, OneHotEncoder
+from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
+from sklearn.svm import SVR
+from sklearn.tree import DecisionTreeRegressor
+from xgboost import XGBRegressor
+from lightgbm import LGBMRegressor
+from models_scratch import LinearRegressionScratch, SVMScratch, DecisionTreeScratch
 import warnings
+import os
 
-warnings.filterwarnings('ignore')  
+warnings.filterwarnings('ignore')
 
 # Initialize FastAPI application with title and version
 app = FastAPI(title="Marine Microplastics Analysis API", version="1.0.0")
+
+# Mount static files for serving the React frontend
+if os.path.exists("frontend/build"):
+    app.mount("/", StaticFiles(directory="frontend/build", html=True), name="static")
 
 # Add CORS middleware to allow cross-origin requests from the frontend
 app.add_middleware(
