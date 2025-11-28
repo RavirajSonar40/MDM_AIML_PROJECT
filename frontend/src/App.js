@@ -56,6 +56,15 @@ function App() {
         <div className="aurora-blob blob-3"></div>
       </div>
 
+      <div className="bubbles">
+        <div className="bubble"></div>
+        <div className="bubble"></div>
+        <div className="bubble"></div>
+        <div className="bubble"></div>
+        <div className="bubble"></div>
+        <div className="bubble"></div>
+      </div>
+
       <div className="content-wrapper">
         <header className="hero-header">
           <motion.div
@@ -72,7 +81,7 @@ function App() {
 
         <div className="nav-container">
           <nav className="nav-tabs">
-            {['data', 'visualize', 'evaluate', 'compare', 'cv', 'detailed'].map((tab) => (
+            {['data', 'visualize', 'evaluate', 'compare', 'cv'].map((tab) => (
               <button
                 key={tab}
                 className={activeTab === tab ? 'tab active' : 'tab'}
@@ -99,7 +108,6 @@ function App() {
                 {activeTab === 'evaluate' && <ModelEvaluation apiUrl={API_URL} />}
                 {activeTab === 'compare' && <ModelComparison apiUrl={API_URL} />}
                 {activeTab === 'cv' && <CrossValidation apiUrl={API_URL} />}
-                {activeTab === 'detailed' && <DetailedComparison apiUrl={API_URL} />}
               </div>
             </motion.div>
           </AnimatePresence>

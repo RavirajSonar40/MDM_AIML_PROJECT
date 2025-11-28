@@ -25,7 +25,7 @@ function ModelComparison({ apiUrl }) {
     <div>
       <h2>Model Comparison</h2>
       <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>
-        Compare all available models side-by-side
+        Compare all available models using 5-fold cross-validation
       </p>
 
       <button className="btn" onClick={compareModels} disabled={loading}>
@@ -57,10 +57,10 @@ function ModelComparison({ apiUrl }) {
               <thead>
                 <tr style={{ background: 'var(--nav-bg)', color: 'var(--accent-glow)' }}>
                   <th style={{ padding: '1rem', textAlign: 'left' }}>Model</th>
-                  <th style={{ padding: '1rem', textAlign: 'right' }}>R² Score</th>
-                  <th style={{ padding: '1rem', textAlign: 'right' }}>RMSE</th>
-                  <th style={{ padding: '1rem', textAlign: 'right' }}>MSE</th>
-                  <th style={{ padding: '1rem', textAlign: 'right' }}>⏱️ Time (s)</th>
+                  <th style={{ padding: '1rem', textAlign: 'right' }}>Mean R² (CV)</th>
+                  <th style={{ padding: '1rem', textAlign: 'right' }}>Mean RMSE (CV)</th>
+                  <th style={{ padding: '1rem', textAlign: 'right' }}>Mean MAE (CV)</th>
+                  <th style={{ padding: '1rem', textAlign: 'right' }}>⏱️ Avg Time/Fold (s)</th>
                 </tr>
               </thead>
               <tbody>
@@ -75,7 +75,7 @@ function ModelComparison({ apiUrl }) {
                       {result.r2_score.toFixed(4)}
                     </td>
                     <td style={{ padding: '1rem', textAlign: 'right' }}>{result.rmse.toFixed(4)}</td>
-                    <td style={{ padding: '1rem', textAlign: 'right' }}>{result.mse.toFixed(4)}</td>
+                    <td style={{ padding: '1rem', textAlign: 'right' }}>{result.mae.toFixed(4)}</td>
                     <td style={{ padding: '1rem', textAlign: 'right', color: '#ff6b6b', fontWeight: '500' }}>
                       {result.training_time}
                     </td>

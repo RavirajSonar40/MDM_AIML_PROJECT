@@ -25,7 +25,7 @@ function DetailedComparison({ apiUrl }) {
     <div>
       <h2>Detailed Model Comparison</h2>
       <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>
-        Comprehensive comparison with multiple metrics and visualizations
+        Comprehensive comparison using 5-fold cross-validation with multiple metrics and visualizations
       </p>
 
       <button className="btn" onClick={runComparison} disabled={loading}>
@@ -57,10 +57,10 @@ function DetailedComparison({ apiUrl }) {
               <thead>
                 <tr style={{ background: 'var(--nav-bg)', color: 'var(--accent-glow)' }}>
                   <th style={{ padding: '1rem', textAlign: 'left' }}>Model</th>
-                  <th style={{ padding: '1rem', textAlign: 'right' }}>R² Score</th>
-                  <th style={{ padding: '1rem', textAlign: 'right' }}>RMSE</th>
-                  <th style={{ padding: '1rem', textAlign: 'right' }}>MAE</th>
-                  <th style={{ padding: '1rem', textAlign: 'right' }}>⏱️ Time (s)</th>
+                  <th style={{ padding: '1rem', textAlign: 'right' }}>Mean R² (CV)</th>
+                  <th style={{ padding: '1rem', textAlign: 'right' }}>Mean RMSE (CV)</th>
+                  <th style={{ padding: '1rem', textAlign: 'right' }}>Mean MAE (CV)</th>
+                  <th style={{ padding: '1rem', textAlign: 'right' }}>⏱️ Avg Time/Fold (s)</th>
                 </tr>
               </thead>
               <tbody>
