@@ -170,9 +170,6 @@ def prepare_data():
 
     return X_processed, y, pipeline
 
-@app.get("/")
-def read_root():
-    return {"message": "Marine Microplastics Analysis API", "version": "1.0.0"}
 
 @app.get("/data/info")
 def get_data_info():

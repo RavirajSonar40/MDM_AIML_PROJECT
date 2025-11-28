@@ -10,7 +10,7 @@ import CrossValidation from './components/CrossValidation';
 import CustomCursor from './components/CustomCursor';
 import ParticleBackground from './components/ParticleBackground';
 
-const API_URL = 'http://localhost:8000';  // API URL for development
+const API_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:8000';  // API URL for development
 
 function App() {
   const [activeTab, setActiveTab] = useState('data');
