@@ -2,13 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import './App.css';
-import TiltCard from './components/TiltCard';
 import DataInfo from './components/DataInfo';
 import Visualization from './components/Visualization';
 import ModelEvaluation from './components/ModelEvaluation';
 import ModelComparison from './components/ModelComparison';
 import CrossValidation from './components/CrossValidation';
-import DetailedComparison from './components/DetailedComparison';
 import CustomCursor from './components/CustomCursor';
 import ParticleBackground from './components/ParticleBackground';
 
