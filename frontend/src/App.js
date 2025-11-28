@@ -10,7 +10,7 @@ import CrossValidation from './components/CrossValidation';
 import CustomCursor from './components/CustomCursor';
 import ParticleBackground from './components/ParticleBackground';
 
-const API_URL = '';  // API is served from the same domain in production
+const API_URL = 'http://localhost:8000';  // API URL for development
 
 function App() {
   const [activeTab, setActiveTab] = useState('data');

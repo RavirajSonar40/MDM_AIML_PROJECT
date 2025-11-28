@@ -6,6 +6,9 @@ services:
     plan: starter
     buildCommand: |
       echo "🚀 Starting build process..."
+      # Create writable directories for Rust/Cargo cache
+      mkdir -p /usr/local/cargo/registry/cache
+      mkdir -p /usr/local/cargo/registry/index
       # Install Python dependencies first (faster)
       pip install -r requirements.txt
       echo "✅ Python dependencies installed"
@@ -21,7 +24,7 @@ services:
     startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: PYTHON_VERSION
-        value: 3.11.4
+        value: 3.12
 
 databases:
   # Optional: Add a database if needed for persistent data
