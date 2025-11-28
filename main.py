@@ -46,7 +46,19 @@ app.add_middleware(
 )
 
 # Load the marine microplastics dataset
-df = pd.read_csv('./Marine_Microplastics_WGS84_8553846406879449657.csv')
+try:
+    csv_path = './Marine_Microplastics_WGS84_8553846406879449657.csv'
+    if os.path.exists(csv_path):
+        df = pd.read_csv(csv_path)
+        print(f"✅ Successfully loaded dataset: {len(df)} rows, {len(df.columns)} columns")
+    else:
+        print(f"❌ CSV file not found at: {csv_path}")
+        print(f"Current working directory: {os.getcwd()}")
+        print(f"Files in directory: {os.listdir('.')}")
+        df = pd.DataFrame()  # Empty dataframe as fallback
+except Exception as e:
+    print(f"❌ Error loading CSV file: {str(e)}")
+    df = pd.DataFrame()  # Empty dataframe as fallback
 
 # Identify numerical and categorical variables from the dataset
 numerical_vars = [col for col in df.select_dtypes(include=np.number).columns.tolist()
@@ -486,6 +498,18 @@ def detailed_comparison(request: ROCRequest):
 @app.get("/health")
 def health_check():
     return {"status": "healthy"}
+
+@app.get("/data/status")
+def data_status():
+    """Check if the dataset loaded successfully"""
+    return {
+        "data_loaded": len(df) > 0,
+        "total_rows": len(df),
+        "total_columns": len(df.columns) if len(df) > 0 else 0,
+        "numerical_vars_count": len(numerical_vars),
+        "categorical_vars_count": len(categorical_vars),
+        "has_target": 'Standardized Nurdle  Amount' in df.columns if len(df) > 0 else False
+    }
 
 # Main entry point to run the FastAPI application with Uvicorn server
 if __name__ == "__main__":
