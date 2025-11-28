@@ -32,9 +32,7 @@ warnings.filterwarnings('ignore')
 # Initialize FastAPI application with title and version
 app = FastAPI(title="Marine Microplastics Analysis API", version="1.0.0")
 
-# Mount static files for serving the React frontend
-if os.path.exists("frontend/build"):
-    app.mount("/", StaticFiles(directory="frontend/build", html=True), name="static")
+# API routes will be defined below, then static files mounted at the end
 
 # Add CORS middleware to allow cross-origin requests from the frontend
 app.add_middleware(
@@ -510,6 +508,10 @@ def data_status():
         "categorical_vars_count": len(categorical_vars),
         "has_target": 'Standardized Nurdle  Amount' in df.columns if len(df) > 0 else False
     }
+
+# Mount static files for serving the React frontend (AFTER API routes)
+if os.path.exists("frontend/build"):
+    app.mount("/", StaticFiles(directory="frontend/build", html=True), name="static")
 
 # Main entry point to run the FastAPI application with Uvicorn server
 if __name__ == "__main__":
