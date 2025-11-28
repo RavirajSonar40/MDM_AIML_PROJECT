@@ -5,27 +5,53 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from typing import List, Optional, Dict, Any
-import pandas as pd
-import numpy as np
-import pickle
-import io
-import base64
-from matplotlib import pyplot as plt
-import seaborn as sns
-from sklearn.pipeline import Pipeline
-from sklearn.model_selection import train_test_split, GridSearchCV, cross_val_score, cross_validate
-from sklearn.compose import ColumnTransformer
-from sklearn.linear_model import LinearRegression, Ridge
-from sklearn.ensemble import RandomForestRegressor, VotingRegressor
-from sklearn.preprocessing import StandardScaler, OrdinalEncoder, OneHotEncoder
-from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
-from sklearn.svm import SVR
-from sklearn.tree import DecisionTreeRegressor
-from xgboost import XGBRegressor
-from lightgbm import LGBMRegressor
-from models_scratch import LinearRegressionScratch, SVMScratch, DecisionTreeScratch
 import warnings
 import os
+
+# Try to import ML libraries, fallback if not available
+try:
+    import pandas as pd
+    import numpy as np
+    import pickle
+    import io
+    import base64
+    from matplotlib import pyplot as plt
+    import seaborn as sns
+    from sklearn.pipeline import Pipeline
+    from sklearn.model_selection import train_test_split, GridSearchCV, cross_val_score, cross_validate
+    from sklearn.compose import ColumnTransformer
+    from sklearn.linear_model import LinearRegression, Ridge
+    from sklearn.ensemble import RandomForestRegressor, VotingRegressor
+    from sklearn.preprocessing import StandardScaler, OrdinalEncoder, OneHotEncoder
+    from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
+    from sklearn.svm import SVR
+    from sklearn.tree import DecisionTreeRegressor
+    from xgboost import XGBRegressor
+    from lightgbm import LGBMRegressor
+    from models_scratch import LinearRegressionScratch, SVMScratch, DecisionTreeScratch
+    ML_AVAILABLE = True
+    print("✅ ML libraries loaded successfully")
+except ImportError as e:
+    print(f"⚠️  ML libraries not available: {e}")
+    ML_AVAILABLE = False
+    # Create dummy dataframe for fallback
+    class pd:
+        @staticmethod
+        def read_csv(path):
+            return []
+        class DataFrame:
+            def __init__(self, data=None):
+                self.data = data or []
+            def __len__(self):
+                return len(self.data)
+            def head(self, n=5):
+                return self.data[:n] if isinstance(self.data, list) else []
+            @property
+            def columns(self):
+                return []
+            def __getitem__(self, key):
+                return []
+    pd = pd()
 
 warnings.filterwarnings('ignore')
 
@@ -150,6 +176,14 @@ def read_root():
 
 @app.get("/data/info")
 def get_data_info():
+    if not ML_AVAILABLE:
+        return {
+            "error": "ML libraries not available",
+            "total_rows": len(df) if hasattr(df, '__len__') else 0,
+            "total_columns": len(df.columns) if hasattr(df, 'columns') else 0,
+            "numerical_variables": [],
+            "categorical_variables": []
+        }
     return {
         "total_rows": len(df),
         "total_columns": len(df.columns),
